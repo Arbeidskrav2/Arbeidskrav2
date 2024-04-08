@@ -18,7 +18,7 @@ Viser detaljert informasjon om den valgte karakteren.
 Tilbyr en funksjon for å legge til det aktuelle elementet i brukerens personlige Star Wars-samling.
 
 Side 3: Samlingsside
-Viser en liste over elementer brukeren har lagt til i sin personlige samling.
+Viser en liste over elementer brukeren har lagt til i sin personlige samling på side 2
 Tillater brukeren å redigere navnet på sin samling.
 Gir mulighet for manipulasjon av listen, som å legge til eller fjerne elementer.
 
