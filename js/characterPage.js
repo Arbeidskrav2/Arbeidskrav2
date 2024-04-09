@@ -19,8 +19,8 @@ async function fetchData(Index) {
 async function characterInformation() {
   try {
     const selectedCharacterIndex = localStorage.getItem("selectedCharacterIndex"); // Getting items from local storage selectedCharacterIndex
-    if(selectedCharacterIndex) {
-      throw new Error ("No character selected")
+    if(!selectedCharacterIndex) {
+      throw new Error ("No character selected") // Throws error if no character is selected
     }
     const apiData = await fetchData(selectedCharacterIndex);
     console.log(selectedCharacterIndex);
