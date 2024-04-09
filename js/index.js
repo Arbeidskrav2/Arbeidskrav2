@@ -17,7 +17,7 @@ characterSide.style.display = "flex";
 characterSide.style.justifyContent = "space-around";
 characterSide.style.alignItems = "center";
 
-// Stilblokk som en streng
+// Stilblokk som en streng.
 const css = `
 body{
    background-color: grey;
