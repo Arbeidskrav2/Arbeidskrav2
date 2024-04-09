@@ -4,7 +4,7 @@ const characterSide = document.getElementById("character_side");
 const jediContainer = document.getElementById("jedi_container");
 const sithContainer = document.getElementById("sith_container");
 
-// Legg til CSS-klasser for jedi-container og sith-container
+// CSS-klasser for jedi-container og sith-container
 
 jediContainer.classList.add("container", "jedi-style");
 sithContainer.classList.add("container", "sith-style");
@@ -35,13 +35,10 @@ body{
 }
 
 /* Spesifikke stiler for jedi og sith */
-.jedi-style {
+.jedi-style, .sith-style {
    width: 700px;
 }
 
-.sith-style {
-   width: 700px;
-}
 
 img{
    width: 200px;
@@ -80,7 +77,7 @@ async function fetchApidata() {
             return results; // Returner resultatene fra denne siden
         });
 
-        const allCharacters = (await Promise.all(getCharacters)).flat(); // Vent på at alle løfter fullføres og kombiner resultatene
+        const allCharacters = (await Promise.all(getCharacters)).flat(); // Venter på at alle løfter fullføres og kombiner resultatene
         organizeAndDisplay(allCharacters); // Kall organizeAndDisplay funksjonen med allCharacters som argument
         console.log(allCharacters);
     } catch (error) {
