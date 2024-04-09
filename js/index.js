@@ -17,7 +17,7 @@ characterSide.style.display = "flex";
 characterSide.style.justifyContent = "space-around";
 characterSide.style.alignItems = "center";
 
-// Lag en stilblokk som en streng
+// Stilblokk som en streng
 const css = `
 body{
    background-color: grey;
@@ -49,13 +49,13 @@ img{
 }`;
 
 
-// Opprett et <style> element
+// Oppretter styling element
 const cssStyling = document.createElement("style");
 
-// Sett stilene inn i <style> elementet
+// Setter stilene inn i elementet
 cssStyling.innerText = css;
 
-// Legg til <style> elementet i <head> delen av dokumentet
+// Legger til styling elementet i <head> delen av dokumentet
 document.head.appendChild(cssStyling);
 
 //  Fetcher Api. Hente karakterer fra Star Wars API. Async await
@@ -81,17 +81,18 @@ async function fetchApidata() {
         });
 
         const allCharacters = (await Promise.all(getCharacters)).flat(); // Vent på at alle løfter fullføres og kombiner resultatene
-        charactersBySide(allCharacters); // Kall charactersBySide funksjonen med allCharacters som argument
+        organizeAndDisplay(allCharacters); // Kall organizeAndDisplay funksjonen med allCharacters som argument
         console.log(allCharacters);
     } catch (error) {
         console.error("Henting av data gikk galt!!!", error);
     }
 };
 
-// Sorterer karakterene på den lyse og mørke siden etter navnene
-function charactersBySide(allCharacters) {
-    const jediIndexes = [0, 1, 2, 4, 9, 13];
-    const sithIndexes = [3, 15, 19, 42, 20, 21];
+// Denne funksjonen sorterer karakterene hvor dem hører til.
+// Den tar inn en liste over alle karakterer som argument.
+function organizeAndDisplay(allCharacters) {
+    const jediIndex = [0, 1, 2, 4, 9, 13];
+    const sithIndex = [3, 15, 19, 42, 20, 21];
 
     const img = [
         "./assets/characters/luke_skywalker.webp",
@@ -108,20 +109,24 @@ function charactersBySide(allCharacters) {
         "./assets/characters/luke_skywalker.webp",
     ];
 
-    jediIndexes.forEach((index, i) => {
+    jediIndex.forEach((index, i) => {
         const characterName = allCharacters[index].name;
-        const characterElement = createCharacterElement(characterName, index, img[i]);
+        const characterElement = createAndDisplayElement(characterName, index, img[i]);
         jediContainer.appendChild(characterElement);
     });
 
-    sithIndexes.forEach((index, i) => {
+    sithIndex.forEach((index, i) => {
         const characterName = allCharacters[index].name;
-        const characterElement = createCharacterElement(characterName, index, img[i + jediIndexes.length]);
+
+        // [i + jediIndexes.length] korrigerer indeksen for Sith-karakterene i img-arrayen for å matche riktig bilde.
+        // Dette er nødvendig fordi Jedi-karakterene kommer først i img-arrayen, så jeg måtte justere indeksen for Sith-karakterene.
+        const characterElement = createAndDisplayElement(characterName, index, img[i + jediIndex.length]);
         sithContainer.appendChild(characterElement);
     });
 }
 
-function createCharacterElement(name, index, img) {
+// // Oppretter og viser html elementer for karakterer
+function createAndDisplayElement(name, index, img) {
     const characterElement = document.createElement("div");
     characterElement.innerHTML = `
         <div>
@@ -134,10 +139,10 @@ function createCharacterElement(name, index, img) {
 }
 
 
-// Kall fetchApidata for å hente data
+// Kaller fetchApidata for å hente data
 fetchApidata(); 
 
-// Lagrer og viser lagrede info på side 2
+// // Lagrer indeksen til den valgte karakteren og videresender til Simens side
 function characterSelection(index) {
     localStorage.setItem("selectedCharacterIndex", index);
     location.href = "Simen.html";
