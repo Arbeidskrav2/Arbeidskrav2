@@ -4,7 +4,7 @@ const characterSide = document.getElementById("character_side");
 const jediContainer = document.getElementById("jedi_container");
 const sithContainer = document.getElementById("sith_container");
 
-// CSS-klasser for jedi-container og sith-container
+// Legger til klasser for jedi-container og sith-container
 
 jediContainer.classList.add("container", "jedi-style");
 sithContainer.classList.add("container", "sith-style");
@@ -129,7 +129,7 @@ function createAndDisplayElement(name, index, img) {
         <div>
             <h3>${name}</h3>
             <img src="${img}" alt="${name}"> <br>
-            <button onclick="characterSelection(${index})">Velg denne karakteren</button>
+            <button onclick="selectCharecter(${index})">Velg denne karakteren</button>
         </div>
     `;
     return characterElement;
@@ -140,7 +140,7 @@ function createAndDisplayElement(name, index, img) {
 fetchApidata(); 
 
 // // Lagrer indeksen til den valgte karakteren og videresender til Simens side
-function characterSelection(index) {
-    localStorage.setItem("selectedCharacterIndex", index);
+function selectCharecter(index) {
+    localStorage.setItem("selectedCharacter", index);
     location.href = "Simen.html";
 }
