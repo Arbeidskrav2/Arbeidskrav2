@@ -1,50 +1,83 @@
-// Html dom struktur og styling. 
+// html struktur
 const heroText = document.getElementById("hero_text");
 const characterSide = document.getElementById("character_side");
-const jediContainer = document.getElementById("jedi_container");
-const sithContainer = document.getElementById("sith_container");
 
-// Legger til klasser for jedi-container og sith-container
 
+// Laget containere til å samle opp karakterer fra api
+// Jedi-seksjonen og dens innhold
+const jedi = document.createElement("div");
+jedi.id = "jedi";
+const jediHeadline = document.createElement("h3");
+jediHeadline.textContent = "Jedi";
+const jediContainer = document.createElement("div");
+
+// Laget containere til å samle opp karakterer fra api
+jediContainer.id = "jedi_container";
+jedi.appendChild(jediHeadline);
+jedi.appendChild(jediContainer);
+characterSide.appendChild(jedi);
+
+// Sith-seksjonen og dens innhold
+const sith = document.createElement("div");
+sith.id = "sith";
+const sithHeadline = document.createElement("h3");
+sithHeadline.textContent = "Sith";
+
+// Laget containere til å samle opp karakterer fra api
+const sithContainer = document.createElement("div");
+sithContainer.id = "sith_container";
+sith.appendChild(sithHeadline);
+sith.appendChild(sithContainer);
+characterSide.appendChild(sith);
+
+// Legger til klasser 
 jediContainer.classList.add("container", "jedi-style");
 sithContainer.classList.add("container", "sith-style");
+sithHeadline.classList.add("sith_headline");
+jediHeadline.classList.add("jedi_headline");
 
+
+
+// Styling
 // Sentrer hero_text
 heroText.style.textAlign = "center";
 
 // Styling for karakter-siden
+document.body.style.backgroundColor = "#494D5F";
 characterSide.style.display = "flex";
+characterSide.style.flexWrap = "wrap";
 characterSide.style.justifyContent = "space-around";
 characterSide.style.alignItems = "center";
 
 // Stilblokk som en streng.
 const css = `
-body{
-   background-color: grey;
-}
-.container {
-   gap: 2rem;
-   display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-   align-items: flex-start;
-   justify-content: space-around;
-   margin: 0 auto;
-   padding: 20px;
-   width: 700px;
+h3{
+    text-align: center;
+    font-weight: bold;
+    padding: ;
+    color: white;
 }
 
-/* Spesifikke stiler for jedi og sith */
+.sith_headline, .jedi_headline{
+    font-size: 3rem;
+}
+
+.container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center
+}
+
 .jedi-style, .sith-style {
    width: 700px;
 }
 
 
 img{
-   width: 200px;
-   height: 240px;
+   width: 180px;
+   height: 200px;
 }`;
-
 
 // Oppretter styling element
 const cssStyling = document.createElement("style");
@@ -58,7 +91,7 @@ document.head.appendChild(cssStyling);
 //  Fetcher Api. Hente karakterer fra Star Wars API. Async await
 
 const baseUrl = "https://swapi.dev/api/people/";
-const endPoint = pageNumber => `?page=${pageNumber}`;
+const endPoint = (pageNumber) => `?page=${pageNumber}`;
 
 async function fetchApidata() {
     try {
@@ -66,10 +99,10 @@ async function fetchApidata() {
         const pageNumbers = [];
         for (let i = 1; i <= allPages; i++) {
             pageNumbers.push(i);
-        } // oppretter en ny array som inneholder tallene fra 1 til antall sider 
+        } // oppretter en ny array som inneholder tallene fra 1 til antall sider
 
-        const getCharacters = pageNumbers.map(async pageNumber => {
-            const res = await fetch(`${baseUrl}${endPoint(pageNumber)}`);// Henter data fra hver side
+        const getCharacters = pageNumbers.map(async (pageNumber) => {
+            const res = await fetch(`${baseUrl}${endPoint(pageNumber)}`); // Henter data fra hver side
             if (!res.ok) {
                 throw new Error(`Noe gikk galt!!!: ${res.status}`);
             }
@@ -83,7 +116,7 @@ async function fetchApidata() {
     } catch (error) {
         console.error("Henting av data gikk galt!!!", error);
     }
-};
+}
 
 // Denne funksjonen sorterer karakterene hvor dem hører til.
 // Den tar inn en liste over alle karakterer som argument.
@@ -108,7 +141,11 @@ function organizeAndDisplay(allCharacters) {
 
     jediIndex.forEach((index, i) => {
         const characterName = allCharacters[index].name;
-        const characterElement = createAndDisplayElement(characterName, index, img[i]);
+        const characterElement = createAndDisplayElement(
+            characterName,
+            index,
+            img[i]
+        );
         jediContainer.appendChild(characterElement);
     });
 
@@ -117,7 +154,11 @@ function organizeAndDisplay(allCharacters) {
 
         // [i + jediIndexes.length] korrigerer indeksen for Sith-karakterene i img-arrayen for å matche riktig bilde.
         // Dette er nødvendig fordi Jedi-karakterene kommer først i img-arrayen, så jeg måtte justere indeksen for Sith-karakterene.
-        const characterElement = createAndDisplayElement(characterName, index, img[i + jediIndex.length]);
+        const characterElement = createAndDisplayElement(
+            characterName,
+            index,
+            img[i + jediIndex.length]
+        );
         sithContainer.appendChild(characterElement);
     });
 }
@@ -135,12 +176,11 @@ function createAndDisplayElement(name, index, img) {
     return characterElement;
 }
 
-
 // Kaller fetchApidata for å hente data
-fetchApidata(); 
+fetchApidata();
 
 // // Lagrer indeksen til den valgte karakteren og videresender til Simens side
 function selectCharecter(index) {
     localStorage.setItem("selectedCharacter", index);
-    location.href = "Simen.html";
+    location.href = "./characterPage.html";
 }
