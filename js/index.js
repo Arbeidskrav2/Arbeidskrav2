@@ -88,14 +88,12 @@ cssStyling.innerText = css;
 // Legger til styling elementet i <head> delen av dokumentet
 document.head.appendChild(cssStyling);
 
-// Sjekker om det er lagret noen karakterer i samlingen
+// Sjekker om det finnes karakterer i samlingen, og deretter naviger til samlingssiden
 function personalCollection() {
     const collection = JSON.parse(localStorage.getItem("characterKey") || "[]"); //Bytt til den faktiske navnen til samlingen som simen kalte den
     if (collection.length > 0) {
-        // Hvis det finnes karakterer i samlingen, naviger til samlingssiden
        location.href = "./js/personalCollection.js"; 
     } else {
-        // Hvis samlingen er tom, vis en advarsel
         alert("For øyeblikket er det ingen karakterer lagret i din StarWars-samling.");
     }
 }
