@@ -57,7 +57,7 @@ let backBtnStyling = document.getElementById("backBtn");
 
 // Endrer sithIndex til å tilsvare riktig index(endepunkt) fra API
 async function adjustSithIndex() {
-  const selectedCharacterIndex = localStorage.getItem("selectedCharacterIndex"); // Getting items from local storage selectedCharacterIndex
+  const selectedCharacterIndex = localStorage.getItem("selectedCharacter"); // Getting items from local storage selectedCharacterIndex
   let adjustedIndex = parseInt(selectedCharacterIndex); // Konverterer til Integer
 
   const sithIndex = [3, 15, 19, 42, 20, 21]; // Lagt til indexer for hver sith
@@ -78,7 +78,7 @@ async function adjustSithIndex() {
 async function characterCard() {
   try {
     const apiData = await adjustSithIndex();
-    const characterKey = `Added: ${apiData.name}` // Gir en nøkkel for lokalStorage
+    const characterKey = `${apiData.name}` // Gir en nøkkel for lokalStorage
 
       const characterData = document.getElementById("characterInfo");
       characterData.innerHTML = `
@@ -96,7 +96,7 @@ async function characterCard() {
       // Referering til knapper for alle kort
       backToFrontPage(apiData);
       saveCharacterBtn(apiData, characterKey);
-      goToCollection(apiData);       
+      goToCollection();       
   } catch (ex) {
     throw new Error(ex);
 }}
