@@ -63,12 +63,13 @@ async function adjustSithIndex() {
   const sithIndex = [3, 15, 19, 42, 20, 21]; // Lagt til indexer for hver sith
   const adjustedSithIndex = sithIndex.slice(-4); // Lager nytt array med 4 siste elementene
 
+  // Utfører oppgaver basert om sithIndex er inkludert i valgt kort
   if (adjustedSithIndex.includes(adjustedIndex)) {
     adjustedIndex += 2; 
   } else if (!adjustedSithIndex.includes(adjustedIndex)) {
     adjustedIndex += 1;
   } else {
-    throw new Error("Adjusted sithIndex does'nt include adjusted index")
+    throw new Error("Adjusted sithIndex does'nt include right index")
   }
   return fetchData(adjustedIndex)
 }
@@ -77,7 +78,7 @@ async function adjustSithIndex() {
 async function characterCard() {
   try {
     const apiData = await adjustSithIndex();
-    const characterKey = `${apiData.name}` // Gir en nøkkel for lokalStorage
+    const characterKey = `Added: ${apiData.name}` // Gir en nøkkel for lokalStorage
 
       const characterData = document.getElementById("characterInfo");
       characterData.innerHTML = `
@@ -109,7 +110,7 @@ function backToFrontPage() {
   });
 } 
 
-// Legger til valgt karakter i localStorage
+// Legger til valgt karakter i personlig samling
 function saveCharacterBtn (apiData, characterKey) {
   const saveCharacterBtn = document.getElementById("saveBtn");
   saveCharacterBtn.style.margin = ".5rem";
