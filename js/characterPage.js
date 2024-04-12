@@ -58,7 +58,7 @@ async function fetchData(index) {
 }
 
 // Endrer sithIndex til å tilsvare riktig index(endepunkt) fra API
-async function adjustSithIndex() {
+function adjustSithIndex() {
   const characterDisplayed = localStorage.getItem("selectedCharacter"); // Henter fra localStorage samling med navn selectedCharacter
   let adjustedIndex = parseInt(characterDisplayed); // Konverterer til Integer
 
@@ -116,7 +116,7 @@ function saveCharacterBtn (apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
   saveCharacterBtn.style.margin = ".5rem";
 
-  // Alt dataen som skal lastet opp i ny localStorageSamling
+  // Alt dataen som skal lastet opp i ny localStorage samling
   const uploadData = {
   name: apiData.name,
   gender: apiData.gender,
@@ -126,10 +126,19 @@ function saveCharacterBtn (apiData) {
   eye_color: apiData.eye_color,
   birth_year: apiData.birth_year
 }
-  // Lagrer til localStorage
-  saveCharacterBtn.addEventListener("click", function () {
+// Lagrer til localStorage
+saveCharacterBtn.addEventListener("click", function () {
+  const exsistingCharacter = localStorage.getItem("starWarsCollection");
+  const changeToArray = [exsistingCharacter];
+  const characterPresent = changeToArray.some(starWarsCharacter => starWarsCharacter.name === apiData.name); // Ser om array har elementer som korresponderer
+    
+    // Sjekker om karakteren finnes i samlingen 
+    if (characterPresent) {
+      alert(`${apiData.name} is already in collection`); 
+    } else {
       localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Setter verdier til lokalStorage   
       alert(`${apiData.name} has been saved to personal collection`); 
+    }
   });
 }
 
