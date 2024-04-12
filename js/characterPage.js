@@ -49,9 +49,9 @@ async function fetchData(index) {
   const baseURL = "https://swapi.dev/api/people"; // API base URL
   try {
     const response = await fetch(`${baseURL}/${index}`);
-    if (!response.ok) {
-      throw new Error(`Error status for fetched api: ${response.status}`); // Oppretter ny error hvis feil oppstår i fetch
-    }
+      if (!response.ok) {
+        throw new Error(`Error status for fetched api: ${response.status}`); // Oppretter ny error hvis feil oppstår i fetch
+      }
     const data = await response.json(); // Gjør om til JSON format
     console.log("Fetched data", data) // Sjekker hvilke data som har blitt hentet fra API i JSON format
     return data;
@@ -63,20 +63,20 @@ async function fetchData(index) {
 // Endrer sithIndex til å tilsvare riktig index(endepunkt) fra API
 function adjustSithIndex() {
   const characterDisplayed = localStorage.getItem("selectedCharacter"); // Henter fra localStorage samling med navn selectedCharacter
+  
   let adjustedIndex = parseInt(characterDisplayed); // Konverterer til Integer
-
   const sithIndexes = [3, 15, 19, 42, 20, 21]; // Lagt til indexer for hver sith
   const changedSithIndexes = sithIndexes.slice(-4); // Lager nytt array med 4 siste elementene
 
-  // Utfører oppgaver basert om sithIndex er inkludert i valgt kort
-  if (changedSithIndexes.includes(adjustedIndex)) {
-    adjustedIndex += 2; // Hvis adjustedIndex er i det nye arrayet
-  } else if (!changedSithIndexes.includes(adjustedIndex)) {
-    adjustedIndex += 1; // AdjustedIndex ikke er i nye arrayet
-  } else {
-    throw new Error("Adjusted sithIndex does'nt include right index");
-  } 
-  return fetchData(adjustedIndex); // Returner fetch data med den endra indexen
+    // Utfører oppgaver basert om sithIndex er inkludert i valgt kort
+    if (changedSithIndexes.includes(adjustedIndex)) {
+      adjustedIndex += 2; // Hvis adjustedIndex er i det nye arrayet
+    } else if (!changedSithIndexes.includes(adjustedIndex)) {
+      adjustedIndex += 1; // AdjustedIndex ikke er i nye arrayet
+    } else {
+      throw new Error("Adjusted sithIndex does'nt include right index");
+    } 
+    return fetchData(adjustedIndex); // Returner fetch data med den endra indexen
 }
 
 // Innhold og funksjonalitet for hvert valgte kort
@@ -95,7 +95,6 @@ async function characterCard() {
       <p> Eye color: ${apiData.eye_color}</p>
       <p> Year: ${apiData.birth_year}</p>
       `;
-
       // Legger til styling
       cardStyling(); 
       cardLocationStyling();
@@ -104,7 +103,7 @@ async function characterCard() {
       backToCharacterSelection();
       saveCharacterBtn(apiData);
       goToCollection();       
-  } catch (ex) {
+  }catch (ex) {
     throw new Error(ex);
 }}
 characterCard(); // Viser Karakterkortet
@@ -117,7 +116,6 @@ function backToCharacterSelection() {
   });
   selectCharacterBtnStyling();
 } 
-
 // Legger til valgt karakter i personlig samling
 function saveCharacterBtn (apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
@@ -148,7 +146,6 @@ function saveCharacterBtn (apiData) {
       }
   });
 }
-
 // Går til personlige samlingen
 function goToCollection() {
   let personalCollectionBtn = document.getElementById(
