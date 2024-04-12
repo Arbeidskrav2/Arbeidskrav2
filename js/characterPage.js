@@ -95,7 +95,7 @@ async function characterCard() {
       <p> Eye color: ${apiData.eye_color}</p>
       <p> Year: ${apiData.birth_year}</p>
       `;
-      
+
       // Legger til styling
       cardStyling(); 
       cardLocationStyling();
@@ -125,27 +125,27 @@ function saveCharacterBtn (apiData) {
 
   // Alt dataen som skal lastet opp i ny localStorage samling
   const uploadData = {
-  name: apiData.name,
-  gender: apiData.gender,
-  height: apiData.height,
-  mass: apiData.mass,
-  hair_color: apiData.hair_color,
-  eye_color: apiData.eye_color,
-  birth_year: apiData.birth_year
+    name: apiData.name,
+    gender: apiData.gender,
+    height: apiData.height,
+    mass: apiData.mass,
+    hair_color: apiData.hair_color,
+    eye_color: apiData.eye_color,
+    birth_year: apiData.birth_year
 }
 // Lagrer til localStorage
-saveCharacterBtn.addEventListener("click", function () {
-  const exsistingCharacter = localStorage.getItem("starWarsCollection");
-  const changeToArray = [exsistingCharacter];
-  const characterPresent = changeToArray.some(starWarsCharacter => starWarsCharacter.name === apiData.name); // Ser om array har elementer som korresponderer
+  saveCharacterBtn.addEventListener("click", function () {
+    const exsistingCharacter = localStorage.getItem("starWarsCollection");
+    const changeToArray = [exsistingCharacter];
+    const characterPresent = changeToArray.some(starWarsCharacter => starWarsCharacter.name === apiData.name); // Ser om array har elementer som korresponderer
     
-    // Sjekker om karakteren finnes i samlingen 
-    if (characterPresent) {
-      alert(`${apiData.name} is already in collection`); 
-    } else {
-      localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Setter verdier til lokalStorage   
-      alert(`${apiData.name} has been saved to personal collection`); 
-    }
+      // Sjekker om karakteren finnes i samlingen 
+      if (characterPresent) {
+        alert(`${apiData.name} is already in collection`); 
+      } else {
+        localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Setter verdier til lokalStorage   
+        alert(`${apiData.name} has been saved to personal collection`); 
+      }
   });
 }
 
