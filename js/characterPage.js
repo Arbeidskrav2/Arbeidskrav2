@@ -1,6 +1,5 @@
 // Styling for body element på siden
 document.body.style.backgroundColor = "#494D5F"
-
 // Styling for elementene i valgt kort
 function cardStyling() {
   let cardStyles = document.getElementById("characterCard");
@@ -17,7 +16,6 @@ function cardStyling() {
     cardStyles.style.border = "solid";
     cardStyles.style.borderWidth = "1.5px";
 }
-
 // Struktur på selve kortet
 function cardLocationStyling () {
   let cardPosition = document.getElementById("characterCard");
@@ -34,7 +32,6 @@ function cardLocationStyling () {
     cardPosition.style.width = "70vw"
     cardPosition.style.height = "70vh"
 }
-
 // Styling for backBtn
 function selectCharacterBtnStyling() {
   let selectCharacterBtn = document.getElementById("backBtn");
@@ -42,7 +39,6 @@ function selectCharacterBtnStyling() {
     selectCharacterBtn.style.top = "3.4%";
     selectCharacterBtn.style.left = "2%" 
 }
-
 
 // Hovedhenting av data
 async function fetchData(index) {
