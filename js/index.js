@@ -8,7 +8,7 @@ const characterSide = document.getElementById("character_side");
 const jedi = document.createElement("div");
 jedi.id = "jedi";
 const jediHeadline = document.createElement("h3");
-jediHeadline.textContent = "Jedi";
+jediHeadline.innerText = "Jedi";
 const jediContainer = document.createElement("div");
 
 // Laget containere til å samle opp karakterer fra api
@@ -21,7 +21,7 @@ characterSide.appendChild(jedi);
 const sith = document.createElement("div");
 sith.id = "sith";
 const sithHeadline = document.createElement("h3");
-sithHeadline.textContent = "Sith";
+sithHeadline.innerText = "Sith";
 
 // Laget containere til å samle opp karakterer fra api
 const sithContainer = document.createElement("div");
@@ -54,7 +54,6 @@ const css = `
 h3{
     text-align: center;
     font-weight: bold;
-    padding: ;
     color: white;
 }
 
@@ -90,7 +89,7 @@ document.head.appendChild(cssStyling);
 
 // Sjekker om det finnes karakterer i samlingen, og deretter naviger til samlingssiden
 function personalCollection() {
-    const collection = JSON.parse(localStorage.getItem("characterKey") || "[]"); //Bytt til den faktiske navnen til samlingen som simen kalte den
+    const collection = JSON.parse(localStorage.getItem("starWarsCollection") || "[]"); 
     if (collection.length > 0) {
        location.href = "./js/personalCollection.js"; 
     } else {
@@ -190,7 +189,7 @@ function createAndDisplayElement(name, index, img) {
 fetchApidata();
 
 // // Lagrer indeksen til den valgte karakteren og videresender til Simens side
-function selectCharacter(index) {
-    localStorage.setItem("selectedCharacter", index);
+function selectCharacter(index, img) {
+    localStorage.setItem("selectedCharacter", JSON.stringify({ index, img }));
     location.href = "./characterPage.html"; 
 }
