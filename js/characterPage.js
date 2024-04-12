@@ -108,7 +108,7 @@ characterCard(); // Viser Karakterkortet
 function backToCharacterSelection() {
   const selectCharacterBtn = document.getElementById("backBtn");
   selectCharacterBtn.addEventListener("click", function () {
-    location.href = "../index.html"; // Henviser til index.html
+    location.href = "./index.html"; // Henviser til index.html
   });
   selectCharacterBtnStyling();
 } 
@@ -118,7 +118,7 @@ function saveCharacterBtn (apiData) {
   saveCharacterBtn.style.margin = ".5rem";
 
   // Alt dataen som skal lastet opp i ny localStorage samling
-  const uploadData = {
+  let uploadData = {
     name: apiData.name,
     gender: apiData.gender,
     height: apiData.height,
@@ -128,26 +128,27 @@ function saveCharacterBtn (apiData) {
     birth_year: apiData.birth_year
 }
 // Lagrer til localStorage
-  saveCharacterBtn.addEventListener("click", function () {
-    const exsistingCharacter = localStorage.getItem("starWarsCollection");
-    const changeToArray = [exsistingCharacter];
-    const characterPresent = changeToArray.some(starWarsCharacter => starWarsCharacter.name === apiData.name); // Ser om array har elementer som korresponderer
-    
-      // Sjekker om karakteren finnes i samlingen 
-      if (characterPresent) {
-        alert(`${apiData.name} is already in collection`); 
-      } else {
-        localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Setter verdier til lokalStorage   
-        alert(`${apiData.name} has been saved to personal collection`); 
-      }
-  });
+saveCharacterBtn.addEventListener("click", function () {
+  const existingCharacters = localStorage.getItem("starWarsCollection");
+  const characters = JSON.parse(existingCharacters);
+  const changeToarray = [characters];
+
+  const characterPresent = changeToarray.some(character => character.name === apiData.name); // Check if character is already in the array
+
+  if (characterPresent) {
+    alert(`${apiData.name} is already in the collection`);
+  } else {
+    localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Save updated array back to local storage
+    alert(`${apiData.name} has been saved to personal collection`);
+  }
+});
 }
 // Går til personlige samlingen
 function goToCollection() {
-  let personalCollectionBtn = document.getElementById(
+  const personalCollectionBtn = document.getElementById(
     "personalCollectionBtn"
   );
   personalCollectionBtn.addEventListener("click", function () {
-    location.href = "../personalCollection.html"
+    location.href = "./personalCollection.html"
   });
 }   
