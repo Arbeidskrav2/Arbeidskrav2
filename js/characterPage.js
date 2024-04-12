@@ -19,27 +19,30 @@ function cardStyling() {
 }
 
 // Struktur på selve kortet
-let cardPosition = document.getElementById("characterCard");
-  cardPosition.style.display = "flex";
-  cardPosition.style.flexDirection = "column";
-  cardPosition.style.marginLeft = "auto";
-  cardPosition.style.marginRight = "auto";
+function cardLocationStyling () {
+  let cardPosition = document.getElementById("characterCard");
+    cardPosition.style.display = "flex";
+    cardPosition.style.flexDirection = "column";
+    cardPosition.style.marginLeft = "auto";
+    cardPosition.style.marginRight = "auto";
 
-  cardPosition.style.position = "fixed";
-  cardPosition.style.top = "50vh";
-  cardPosition.style.left = "12vw"
-  cardPosition.style.transform = "translateY(-50%)";
+    cardPosition.style.position = "fixed";
+    cardPosition.style.top = "50vh";
+    cardPosition.style.left = "12vw"
+    cardPosition.style.transform = "translateY(-50%)";
 
-  cardPosition.style.width = "70vw"
-  cardPosition.style.height = "70vh"
-
+    cardPosition.style.width = "70vw"
+    cardPosition.style.height = "70vh"
+}
 
 // Styling for backBtn
-let backBtnStyling = document.getElementById("backBtn");
-    backBtnStyling.style.position = "fixed";
-    backBtnStyling.style.top = "3.4%";
-    backBtnStyling.style.left = "2%"
-// Starter med
+function selectCharacterBtnStyling() {
+  let selectCharacterBtn = document.getElementById("backBtn");
+    selectCharacterBtn.style.position = "fixed";
+    selectCharacterBtn.style.top = "3.4%";
+    selectCharacterBtn.style.left = "2%" 
+}
+
 
 // Hovedhenting av data
 async function fetchData(index) {
@@ -92,10 +95,13 @@ async function characterCard() {
       <p> Eye color: ${apiData.eye_color}</p>
       <p> Year: ${apiData.birth_year}</p>
       `;
-      cardStyling(); // Legger til styling
+      
+      // Legger til styling
+      cardStyling(); 
+      cardLocationStyling();
 
       // Referering til knapper for alle kort
-      backToFrontPage(apiData);
+      backToCharacterSelection();
       saveCharacterBtn(apiData);
       goToCollection();       
   } catch (ex) {
@@ -104,11 +110,12 @@ async function characterCard() {
 characterCard(); // Viser Karakterkortet
 
 // Går til forsiden
-function backToFrontPage() {
-  const backBtn = document.getElementById("backBtn");
-  backBtn.addEventListener("click", function () {
+function backToCharacterSelection() {
+  const selectCharacterBtn = document.getElementById("backBtn");
+  selectCharacterBtn.addEventListener("click", function () {
     location.href = "../index.html"; // Henviser til index.html
   });
+  selectCharacterBtnStyling();
 } 
 
 // Legger til valgt karakter i personlig samling
