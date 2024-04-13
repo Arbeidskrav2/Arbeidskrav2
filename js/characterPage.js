@@ -113,12 +113,36 @@ function backToCharacterSelection() {
     location.href = "./index.html"; // Henviser til index.html
   });
   selectCharacterBtnStyling();
-} 
+}
+
+// Lagrer informasjon til 
+async function saveCharacterToCrudCrud(uploadData) {
+  const startURL = "https://crudcrud.com/api/34060de824dd4a929dd93e240e113f75";
+  const endPoint = "starWarsCharacters";
+
+  // Fetch for POST metode
+  try {
+    const response = await fetch(`${startURL}/${endPoint}`, {
+      method: 'POST', // Setter metoden for responsen
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(uploadData)
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save to CRUD CRUD');
+    }
+    const data = await response.json();
+    console.log("Saved to CRUD CRUD", data);
+  }catch (error) {
+    console.error("Error saving to CRUD CRUD", error);
+  }
+}
+
 // Legger til valgt karakter i personlig samling
 function saveCharacterBtn (apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
-  saveCharacterBtn.style.marginLeft = "2.5rem";
-  saveCharacterBtn.st
 
   // Alt dataen som skal lastet opp i ny localStorage samling
   let uploadData = {
@@ -131,20 +155,28 @@ function saveCharacterBtn (apiData) {
     birth_year: apiData.birth_year
 }
 // Lagrer til localStorage
-saveCharacterBtn.addEventListener("click", function () {
+saveCharacterBtn.addEventListener("click", async function () {
   const existingCharacters = localStorage.getItem("starWarsCollection");
   const characters = JSON.parse(existingCharacters);
   const changeToarray = [characters];
 
   const characterPresent = changeToarray.some(character => character.name === apiData.name); // Check if character is already in the array
 
-  if (characterPresent) {
-    alert(`${apiData.name} is already in the collection`);
-  } else {
-    localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Save updated array back to local storage
-    alert(`${apiData.name} has been saved to personal collection`);
-  }
-});
+    // Ser om karakter er lagret og utfører handling basert på det
+    if (characterPresent) {
+      alert(`${apiData.name} is already in the collection`);
+    } else {
+      localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Save updated array back to local storage
+
+      // Prøver å lagre informasjonen i CRUD CRUD   
+      try {
+        await saveCharacterToCrudCrud(uploadData);
+        alert(`${apiData.name} has been saved to personal collection`);
+      } catch (ex) {
+        alert("Failed to save", ex); 
+      }
+    }
+  });
 }
 // Går til personlige samlingen
 function goToCollection() {
@@ -154,4 +186,4 @@ function goToCollection() {
   personalCollectionBtn.addEventListener("click", function () {
     location.href = "./personalCollection.html"
   });
-}   
+}
