@@ -64,7 +64,7 @@ function personalCollection() {
 }
 
 
-//  Fetcher Api. Hente karakterer fra Star Wars API. Jeg valgte å bruke Async await
+//  Fetcher Api. Hente karakterer fra Star Wars API med Async/Await
 const baseUrl = "https://swapi.dev/api/people/";
 const endPoint = (pageNumber) => `?page=${pageNumber}`;
 
@@ -74,19 +74,19 @@ async function fetchApidata() {
         const pageNumbers = [];
         for (let i = 1; i <= allPages; i++) {
             pageNumbers.push(i);
-        } // oppretter en ny array som inneholder tallene fra 1 til antall sider
+        } // Oppretter en ny array som inneholder tallene fra 1 til antall sider
 
         const getCharacters = pageNumbers.map(async (pageNumber) => {
-            const res = await fetch(`${baseUrl}${endPoint(pageNumber)}`); // Henter data fra hver side
+            const res = await fetch(`${baseUrl}${endPoint(pageNumber)}`); 
             if (!res.ok) {
                 throw new Error(`Noe gikk galt!!!: ${res.status}`);
             }
-            const { results } = await res.json(); // Hent resultatene fra responsen
-            return results; // Returner resultatene fra denne siden
+            const { results } = await res.json(); 
+            return results; 
         });
 
         const allCharacters = (await Promise.all(getCharacters)).flat(); // Venter på at alle løfter fullføres og kombiner resultatene
-        organizeAndDisplay(allCharacters); // Kall organizeAndDisplay funksjonen med allCharacters som argument
+        organizeAndDisplay(allCharacters);
         console.log(allCharacters);
     } catch (error) {
         console.error("Henting av data gikk galt!!!", error);
@@ -94,7 +94,6 @@ async function fetchApidata() {
 }
 
 // Denne funksjonen sorterer karakterene hvor dem hører til.
-// Den tar inn en liste over alle karakterer som argument.
 function organizeAndDisplay(allCharacters) {
     const jediIndex = [0, 4, 13, 1, 2, 12];
     const sithIndex = [3, 15, 19, 42, 20, 21];
@@ -150,11 +149,34 @@ function createAndDisplayElement(name, index, img) {
     return characterCard;
 }
 
-// Kaller fetchApidata for å hente data
 fetchApidata();
 
-// // Lagrer indeksen til den valgte karakteren og videresender til side 2
-function selectCharacter(index) {
+// Lagrer indeksen i crud og localstorage til den valgte karakteren og videresender til side 2
+const crudURL = "https://crudcrud.com/api/e8fbbdf9093d4cc2a6366d752d1533a0";
+const crudEndPoint = "StarWarsSavedData";
+
+// Fetcher Api. Get og Post metode. Lagrer både i Crud og LocalStorage
+async function selectCharacter(index) {
     localStorage.setItem("selectedCharacter", index);
-    location.href = "./characterPage.html"; 
+    try {
+        const selectedCharacter = {
+            index: index
+        };
+        const res = await fetch(`${crudURL}/${crudEndPoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(selectedCharacter)
+        });
+        if (!res.ok) {
+            throw new Error(`Noe gikk galt her!!!: ${res.status}`);
+        }
+        localStorage.setItem("selectedCharacter", index); 
+        console.log(index);
+        location.href = "./characterPage.html"; 
+    }   catch (error) {
+        console.error(error);
+        alert("Karakteren ble ikke lagret!!!");
+    }
 }
