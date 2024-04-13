@@ -1,5 +1,5 @@
 // Styling for body element på siden
-document.body.style.backgroundColor = "#494D5F"
+document.body.style.backgroundImage = "linear-gradient(145deg, #ffffff, #000000)";
 // Styling for elementene i valgt kort
 function cardStyling() {
   let cardStyles = document.getElementById("characterCard");
@@ -7,13 +7,15 @@ function cardStyling() {
     cardStyles.style.flexDirection = "column";
     cardStyles.style.justifyContent = "center";
     cardStyles.style.alignItems = "center";
-    cardStyles.style.backgroundColor = "#D0BDF4";
+    cardStyles.style.backgroundColor = "#b31223";
     cardStyles.style.padding = "1rem";
     
     cardStyles.style.textAlign = "center";
+    cardStyles.style.fontWeight = "bold"
     cardStyles.style.letterSpacing = "2px";
 
     cardStyles.style.border = "solid";
+    cardStyles.style.borderRadius = "2rem"
     cardStyles.style.borderWidth = "1.5px";
 }
 // Struktur på selve kortet
@@ -37,7 +39,7 @@ function selectCharacterBtnStyling() {
   let selectCharacterBtn = document.getElementById("backBtn");
     selectCharacterBtn.style.position = "fixed";
     selectCharacterBtn.style.top = "3.4%";
-    selectCharacterBtn.style.left = "2%" 
+    selectCharacterBtn.style.left = "2%";
 }
 
 // Hovedhenting av data
@@ -115,7 +117,8 @@ function backToCharacterSelection() {
 // Legger til valgt karakter i personlig samling
 function saveCharacterBtn (apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
-  saveCharacterBtn.style.margin = ".5rem";
+  saveCharacterBtn.style.marginLeft = "2.5rem";
+  saveCharacterBtn.st
 
   // Alt dataen som skal lastet opp i ny localStorage samling
   let uploadData = {
