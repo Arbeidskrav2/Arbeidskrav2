@@ -1,9 +1,11 @@
 // html struktur
+
+// Header og section
 const heroText = document.getElementById("hero_text");
 const characterSide = document.getElementById("character_side");
 
 
-// Laget containere til å samle opp karakterer fra api
+// Containere til å samle opp karakterer fra api
 // Jedi-seksjonen og dens innhold
 const jedi = document.createElement("div");
 jedi.id = "jedi";
@@ -11,7 +13,7 @@ const jediHeadline = document.createElement("h3");
 jediHeadline.innerText = "Jedi";
 const jediContainer = document.createElement("div");
 
-// Laget containere til å samle opp karakterer fra api
+// Containere til å samle opp karakterer fra api
 jediContainer.id = "jedi_container";
 jedi.appendChild(jediHeadline);
 jedi.appendChild(jediContainer);
@@ -23,7 +25,7 @@ sith.id = "sith";
 const sithHeadline = document.createElement("h3");
 sithHeadline.innerText = "Sith";
 
-// Laget containere til å samle opp karakterer fra api
+// Containere til å samle opp karakterer fra api
 const sithContainer = document.createElement("div");
 sithContainer.id = "sith_container";
 sith.appendChild(sithHeadline);
@@ -39,55 +41,19 @@ jediHeadline.classList.add("jedi_headline");
 
 
 // Styling
-// Sentrer hero_text
+// Sentrerer og legger til avstand på hero_text
 heroText.style.textAlign = "center";
+heroText.style.paddingTop ="1rem";
 
 // Styling for karakter-siden
-document.body.style.backgroundColor = "#494D5F";
+document.body.style.backgroundImage = "linear-gradient(145deg, #ffffff, #000000)";
+document.body.style.height = "100vh";
 characterSide.style.display = "flex";
 characterSide.style.flexWrap = "wrap";
 characterSide.style.justifyContent = "space-around";
 characterSide.style.alignItems = "center";
 
-// Stilblokk som en streng.
-const css = `
-h3{
-    text-align: center;
-    font-weight: bold;
-    color: white;
-}
-
-.sith_headline, .jedi_headline{
-    font-size: 3rem;
-}
-
-.container {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center
-}
-
-.jedi-style, .sith-style {
-   width: 700px;
-}
-
-
-img{
-   width: 180px;
-   height: 200px;
-}`;
-
-// Oppretter styling element
-const cssStyling = document.createElement("style");
-
-// Setter stilene inn i elementet
-cssStyling.innerText = css;
-
-// Legger til styling elementet i <head> delen av dokumentet
-document.head.appendChild(cssStyling);
-
-// Sjekker om det finnes karakterer i samlingen, og deretter naviger til samlingssiden
+// Sjekker om det finnes karakterer i samlingen på side 3, og deretter navigerer til samlingssiden
 function personalCollection() {
     const collection = JSON.parse(localStorage.getItem("starWarsCollection") || "[]"); 
     if (collection.length > 0) {
@@ -98,7 +64,7 @@ function personalCollection() {
 }
 
 
-//  Fetcher Api. Hente karakterer fra Star Wars API. Async await
+//  Fetcher Api. Hente karakterer fra Star Wars API. Jeg valgte å bruke Async await
 const baseUrl = "https://swapi.dev/api/people/";
 const endPoint = (pageNumber) => `?page=${pageNumber}`;
 
@@ -130,32 +96,32 @@ async function fetchApidata() {
 // Denne funksjonen sorterer karakterene hvor dem hører til.
 // Den tar inn en liste over alle karakterer som argument.
 function organizeAndDisplay(allCharacters) {
-    const jediIndex = [0, 1, 2, 4, 9, 13];
+    const jediIndex = [0, 4, 13, 1, 2, 12];
     const sithIndex = [3, 15, 19, 42, 20, 21];
 
     const img = [
         "./assets/characters/luke_skywalker.webp",
+        "./assets/characters/Leia_Organa.webp",
+        "./assets/characters/han_solo.webp",
         "./assets/characters/C_3PO.webp",
         "./assets/characters/R2_D2.webp",
-        "./assets/characters/Leia_Organa.webp",
-        "./assets/characters/Obi_wan.webp",
-        "./assets/characters/han_solo.webp",
-        "./assets/characters/luke_skywalker.webp",
-        "./assets/characters/luke_skywalker.webp",
-        "./assets/characters/luke_skywalker.webp",
-        "./assets/characters/luke_skywalker.webp",
-        "./assets/characters/luke_skywalker.webp",
-        "./assets/characters/luke_skywalker.webp",
+        "./assets/characters/Chewbacca.webp",
+        "./assets/characters/Darth_Vader.webp",
+        "./assets/characters/Jabba.webp",
+        "./assets/characters/Palpatine.webp",
+        "./assets/characters/Maul.webp",
+        "./assets/characters/Boba_Fett.webp",
+        "./assets/characters/IG_88.webp",
     ];
 
     jediIndex.forEach((index, i) => {
         const characterName = allCharacters[index].name;
-        const characterElement = createAndDisplayElement(
+        const characterCard = createAndDisplayElement(
             characterName,
             index,
             img[i]
         );
-        jediContainer.appendChild(characterElement);
+        jediContainer.appendChild(characterCard);
     });
 
     sithIndex.forEach((index, i) => {
@@ -163,33 +129,32 @@ function organizeAndDisplay(allCharacters) {
 
         // [i + jediIndexes.length] korrigerer indeksen for Sith-karakterene i img-arrayen for å matche riktig bilde.
         // Dette er nødvendig fordi Jedi-karakterene kommer først i img-arrayen, så jeg måtte justere indeksen for Sith-karakterene.
-        const characterElement = createAndDisplayElement(
+        const characterCard = createAndDisplayElement(
             characterName,
             index,
             img[i + jediIndex.length]
         );
-        sithContainer.appendChild(characterElement);
+        sithContainer.appendChild(characterCard);
     });
 }
 
 // // Oppretter og viser html elementer for karakterer
 function createAndDisplayElement(name, index, img) {
-    const characterElement = document.createElement("div");
-    characterElement.innerHTML = `
-        <div>
+    const characterCard = document.createElement("div");
+    characterCard.className = 'character_card';
+    characterCard.innerHTML = `
             <h3>${name}</h3>
             <img src="${img}" alt="${name}"> <br>
-            <button onclick="selectCharacter(${index})">Velg denne karakteren</button>
-        </div>
+            <button onclick="selectCharacter(${index})">I Choose You</button>
     `;
-    return characterElement;
+    return characterCard;
 }
 
 // Kaller fetchApidata for å hente data
 fetchApidata();
 
-// // Lagrer indeksen til den valgte karakteren og videresender til Simens side
-function selectCharacter(index, img) {
-    localStorage.setItem("selectedCharacter", JSON.stringify({ index, img }));
+// // Lagrer indeksen til den valgte karakteren og videresender til side 2
+function selectCharacter(index) {
+    localStorage.setItem("selectedCharacter", index);
     location.href = "./characterPage.html"; 
 }
