@@ -113,12 +113,12 @@ function backToCharacterSelection() {
     location.href = "./index.html"; // Henviser til index.html
   });
   selectCharacterBtnStyling();
-}
-
+} 
+// Legger til valgt karakter i personlig samling
 // Lagrer informasjon til 
 async function saveCharacterToCrudCrud(uploadData) {
-  const startURL = "https://crudcrud.com/api/34060de824dd4a929dd93e240e113f75";
-  const endPoint = "starWarsCharacters";
+  const startURL = "https://crudcrud.com/api/e8fbbdf9093d4cc2a6366d752d1533a0";
+  const endPoint = "StarWarsSavedData";
 
   // Fetch for POST metode
   try {
@@ -135,16 +135,15 @@ async function saveCharacterToCrudCrud(uploadData) {
     }
     const data = await response.json();
     console.log("Saved to CRUD CRUD", data);
-  }catch (error) {
-    console.error("Error saving to CRUD CRUD", error);
+  } catch (error) {
+    alert("Failed to save: " + error.message); // Gi en melding til brukeren om feilen
   }
 }
 
 // Legger til valgt karakter i personlig samling
-function saveCharacterBtn (apiData) {
+function saveCharacterBtn(apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
-
-  // Alt dataen som skal lastet opp i ny localStorage samling
+// Alt dataen som skal lastet opp i ny localStorage samling
   let uploadData = {
     name: apiData.name,
     gender: apiData.gender,
@@ -153,28 +152,22 @@ function saveCharacterBtn (apiData) {
     hair_color: apiData.hair_color,
     eye_color: apiData.eye_color,
     birth_year: apiData.birth_year
-}
-// Lagrer til localStorage
-saveCharacterBtn.addEventListener("click", async function () {
-  const existingCharacters = localStorage.getItem("starWarsCollection");
-  const characters = JSON.parse(existingCharacters);
-  const changeToarray = [characters];
+  };
+  // Lagrer til localStorage
+  saveCharacterBtn.addEventListener("click", async function () {
+    let existingCharacters = localStorage.getItem("starWarsCollection");
+    if (!existingCharacters) {
+      existingCharacters = "[]"; // Hvis ikke noe er lagret, sett til en tom liste
+    }
+    const characters = JSON.parse(existingCharacters);
+    localStorage.setItem("starWarsCollection", JSON.stringify(characters)); // Lagre den oppdaterte samlingen til localStorage
 
-  const characterPresent = changeToarray.some(character => character.name === apiData.name); // Check if character is already in the array
-
-    // Ser om karakter er lagret og utfører handling basert på det
-    if (characterPresent) {
-      alert(`${apiData.name} is already in the collection`);
-    } else {
-      localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Save updated array back to local storage
-
-      // Prøver å lagre informasjonen i CRUD CRUD   
-      try {
-        await saveCharacterToCrudCrud(uploadData);
-        alert(`${apiData.name} has been saved to personal collection`);
-      } catch (ex) {
-        alert("Failed to save", ex); 
-      }
+    // Prøver å lagre informasjonen i CRUD CRUD
+    try {
+      await saveCharacterToCrudCrud(uploadData);
+      alert(`${apiData.name} has been saved to personal collection`);
+    } catch (ex) {
+      alert("Failed to save: " + ex.message);
     }
   });
 }
@@ -186,4 +179,4 @@ function goToCollection() {
   personalCollectionBtn.addEventListener("click", function () {
     location.href = "./personalCollection.html"
   });
-}
+}   
