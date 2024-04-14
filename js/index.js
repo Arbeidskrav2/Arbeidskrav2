@@ -180,3 +180,4 @@ async function selectCharacter(index) {
         alert("Karakteren ble ikke lagret!!!");
     }
 }
+
