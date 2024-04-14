@@ -155,7 +155,7 @@ fetchApidata();
 const crudURL = "https://crudcrud.com/api/8b48236bb4ec4d019f0375f897f17268";
 const crudEndPoint = "starWarsUploadData";
 
-// Fetcher Api. Post metode. Lagrer både i Crud og LocalStorage
+// Lagrer både i Crud Api og LocalStorage
 async function selectCharacter(index) {
     localStorage.setItem("selectedCharacter", index);
     try {
