@@ -152,8 +152,8 @@ function createAndDisplayElement(name, index, img) {
 fetchApidata();
 
 // Lagrer indeksen i crud og localstorage til den valgte karakteren og videresender til side 2
-const crudURL = "https://crudcrud.com/api/e8fbbdf9093d4cc2a6366d752d1533a0";
-const crudEndPoint = "StarWarsSavedData";
+const crudURL = "https://crudcrud.com/api/8b48236bb4ec4d019f0375f897f17268";
+const crudEndPoint = "starWarsUploadData";
 
 // Fetcher Api. Get og Post metode. Lagrer både i Crud og LocalStorage
 async function selectCharacter(index) {
