@@ -15,7 +15,7 @@ function cardStyling() {
     cardStyles.style.letterSpacing = "2px";
 
     cardStyles.style.border = "solid";
-    cardStyles.style.borderRadius = "2rem"
+    cardStyles.style.borderRadius = "2.5rem"
     cardStyles.style.borderWidth = "1.5px";
 }
 // Struktur på selve kortet
@@ -53,16 +53,40 @@ async function fetchData(index) {
     const data = await response.json(); // Gjør om til JSON format
     console.log("Fetched data", data) // Sjekker hvilke data som har blitt hentet fra API i JSON format
     return data;
-  } catch (ex) {
-    throw new Error(`Error exeption thrown: ${ex}`); // Tar tak i expections og kaster de som en error
+  } catch (error) {
+    throw new Error("Could not fetch any data from api", error); 
+  }
+}
+
+// Lagrer informasjon til CRUD CRUD
+async function saveCharacterToCrudCrud(uploadData) {
+  const startURL = "https://crudcrud.com/api/8b48236bb4ec4d019f0375f897f17268";
+  const endPoint = "starWarsUploadData";
+
+  // POST forspørsel mot backEnd API for CRUD 
+  try {
+    const response = await fetch(`${startURL}/${endPoint}`, {
+      method: 'POST', // Setter metoden for responsen
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(uploadData)
+    });
+    if(!response.ok) {
+      throw new Error(`Something went wrong with HTTP-request: ${response.status}`)
+    }
+      const data = await response.json();
+      console.log("Sucessfully saved data to CRUD CRUD", JSON.stringify(data)); // For klar og informasjonsfyldig log
+  } catch (error) {
+    console.log("Could not save data to CRUD CRUD:", error); // Log feilen i consolen
   }
 }
 
 // Endrer sithIndex til å tilsvare riktig index(endepunkt) fra API
 function adjustSithIndex() {
   const characterDisplayed = localStorage.getItem("selectedCharacter"); // Henter fra localStorage samling med navn selectedCharacter
-  
   let adjustedIndex = parseInt(characterDisplayed); // Konverterer til Integer
+  
   const sithIndexes = [3, 15, 19, 42, 20, 21]; // Lagt til indexer for hver sith
   const changedSithIndexes = sithIndexes.slice(-4); // Lager nytt array med 4 siste elementene
 
@@ -72,7 +96,7 @@ function adjustSithIndex() {
     } else if (!changedSithIndexes.includes(adjustedIndex)) {
       adjustedIndex += 1; // AdjustedIndex ikke er i nye arrayet
     } else {
-      throw new Error("Adjusted sithIndex does'nt include right index");
+      console.log("Indexes not found");
     } 
     return fetchData(adjustedIndex); // Returner fetch data med den endra indexen
 }
@@ -101,8 +125,8 @@ async function characterCard() {
       backToCharacterSelection();
       saveCharacterBtn(apiData);
       goToCollection();       
-  }catch (ex) {
-    throw new Error(ex);
+  }catch (error) {
+    throw new Error("Something went wrong with displaying data from API", error);
 }}
 characterCard(); // Viser Karakterkortet
 
@@ -114,35 +138,11 @@ function backToCharacterSelection() {
   });
   selectCharacterBtnStyling();
 } 
-// Legger til valgt karakter i personlig samling
-// Lagrer informasjon til 
-async function saveCharacterToCrudCrud(uploadData) {
-  const startURL = "https://crudcrud.com/api/e8fbbdf9093d4cc2a6366d752d1533a0";
-  const endPoint = "StarWarsSavedData";
-
-  // Fetch for POST metode
-  try {
-    const response = await fetch(`${startURL}/${endPoint}`, {
-      method: 'POST', // Setter metoden for responsen
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(uploadData)
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to save to CRUD CRUD');
-    }
-    const data = await response.json();
-    console.log("Saved to CRUD CRUD", data);
-  } catch (error) {
-    alert("Failed to save: " + error.message); // Gi en melding til brukeren om feilen
-  }
-}
 
 // Legger til valgt karakter i personlig samling
 function saveCharacterBtn(apiData) {
   const saveCharacterBtn = document.getElementById("saveBtn");
+
 // Alt dataen som skal lastet opp i ny localStorage samling
   let uploadData = {
     name: apiData.name,
@@ -153,22 +153,23 @@ function saveCharacterBtn(apiData) {
     eye_color: apiData.eye_color,
     birth_year: apiData.birth_year
   };
+
   // Lagrer til localStorage
   saveCharacterBtn.addEventListener("click", async function () {
     let existingCharacters = localStorage.getItem("starWarsCollection");
-    if (!existingCharacters) {
-      existingCharacters = "[]"; // Hvis ikke noe er lagret, sett til en tom liste
-    }
-    const characters = JSON.parse(existingCharacters);
-    localStorage.setItem("starWarsCollection", JSON.stringify(characters)); // Lagre den oppdaterte samlingen til localStorage
+      if (!existingCharacters) {
+        existingCharacters = "[]"; // Hvis ikke noe er lagret, sett til en tom liste
+      }
+      const characters = JSON.parse(existingCharacters);
+      localStorage.setItem("starWarsCollection", JSON.stringify(characters)); // Lagre den oppdaterte samlingen til localStorage
 
-    // Prøver å lagre informasjonen i CRUD CRUD
-    try {
-      await saveCharacterToCrudCrud(uploadData);
-      alert(`${apiData.name} has been saved to personal collection`);
-    } catch (ex) {
-      alert("Failed to save: " + ex.message);
-    }
+      // Prøver å lagre informasjonen i CRUD CRUD
+      try {
+        await saveCharacterToCrudCrud(uploadData); // Aktiverer async function for POST til CRUD CRUD
+        alert(`${apiData.name} has been saved to personal collection`);
+      } catch (error) {
+        alert("Failed to save either in localStorage or CRUD CRUD", error); // Error melding for brukeren
+      }
   });
 }
 // Går til personlige samlingen
