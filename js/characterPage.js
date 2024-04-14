@@ -96,7 +96,7 @@ function adjustSithIndex() {
     } else if (!changedSithIndexes.includes(adjustedIndex)) {
       adjustedIndex += 1; // AdjustedIndex ikke er i nye arrayet
     } else {
-      console.log("Indexes not found");
+      console.log("Could not find any indexes");
     } 
     return fetchData(adjustedIndex); // Returner fetch data med den endra indexen
 }
@@ -161,7 +161,10 @@ function saveCharacterBtn(apiData) {
         existingCharacters = "[]"; // Hvis ikke noe er lagret, sett til en tom liste
       }
       const characters = JSON.parse(existingCharacters);
-      localStorage.setItem("starWarsCollection", JSON.stringify(characters)); // Lagre den oppdaterte samlingen til localStorage
+      const changeToArray = [characters] // Endrer karakter til array for bruk av .push
+      
+      changeToArray.push(uploadData) // Pushes up changes
+      localStorage.setItem("starWarsCollection", JSON.stringify(uploadData)); // Lagre den oppdaterte samlingen til localStorage
 
       // Prøver å lagre informasjonen i CRUD CRUD
       try {
